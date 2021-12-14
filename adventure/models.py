@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import date
 # Create your models here.
 
 
@@ -22,7 +22,16 @@ class Vehicle(models.Model):
 
     def can_start(self) -> bool:
         return self.vehicle_type.max_capacity >= self.passengers
-
+    
+    def get_distribution(self) -> list:
+        if self.vehicle_type:
+            max_capacity = self.vehicle_type.max_capacity
+            distribution_lineal = [ x <= self.passengers  for x in range(1, max_capacity + 1)]
+            distribution_group = []
+            for y in range(round(max_capacity / 2.0)):
+                distribution_group.append(distribution_lineal[y*2: (y+1) * 2])
+            return distribution_group
+        return []
 
 class Journey(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.PROTECT)
@@ -31,3 +40,8 @@ class Journey(models.Model):
 
     def __str__(self) -> str:
         return f"{self.vehicle.name} ({self.start} - {self.end})"
+
+    def is_finished(self) -> bool:
+        if not self.end:
+            return False
+        return self.end <= date.today()

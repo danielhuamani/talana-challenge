@@ -10,7 +10,8 @@ from adventure import models, notifiers, repositories, serializers, usecases
 class CreateVehicleAPIView(APIView):
     def post(self, request: Request) -> Response:
         payload = request.data
-        vehicle_type = models.VehicleType.objects.get(name=payload["vehicle_type"])
+        vehicle_type = models.VehicleType.objects.get(
+            name=payload["vehicle_type"])
         vehicle = models.Vehicle.objects.create(
             name=payload["name"],
             passengers=payload["passengers"],

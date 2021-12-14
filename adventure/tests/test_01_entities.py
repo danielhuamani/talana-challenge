@@ -31,7 +31,6 @@ class TestVehicle:
         vehicle = models.Vehicle(vehicle_type=car, passengers=10)
         assert not vehicle.can_start()
 
-    @pytest.mark.skip  # Remove
     def test_vehicle_distribution(self, car, van):
         # TODO: implement a method called "get_distribution" that returns a matrix filled of booleans
         # with the "standard distribution" in a vehicle, from top to bottom and left to right.
@@ -51,13 +50,13 @@ class TestVehicle:
         # ]
         vehicle = models.Vehicle(vehicle_type=car, passengers=3)
         distribution_expected = [[True, True], [True, False]]
+        print(vehicle.get_distribution(), "get_distribution")
         assert vehicle.get_distribution() == distribution_expected
 
         vehicle = models.Vehicle(vehicle_type=van, passengers=5)
         distribution_expected = [[True, True], [True, True], [True, False]]
         assert vehicle.get_distribution() == distribution_expected
 
-    @pytest.mark.skip  # Remove
     def test_valid_number_plate(self):
         # TODO: implement a function called "validate_number_plate"
         # a valid number plate consists of three pairs of alphanumeric chars separated by hyphen
@@ -70,12 +69,12 @@ class TestVehicle:
         assert not models.validate_number_plate("AA 12 34")
 
 
-@pytest.mark.skip  # Remove
 class TestJourney:
     # TODO: implement "is_finished" method
     # a finished journey depends on the end value
     def test_is_finished(self, tesla):
-        journey = models.Journey(start=date.today(), end=date.today(), vehicle=tesla)
+        journey = models.Journey(
+            start=date.today(), end=date.today(), vehicle=tesla)
         assert journey.is_finished()
 
     def test_is_not_finished(self, tesla):
