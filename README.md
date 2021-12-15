@@ -31,3 +31,20 @@ http://localhost:8000/api/schema/swagger-ui/
 ### Mailhog
 
 http://localhost:1025
+
+
+## Refactor
+
+- I would add services layer pattern for logic for example validate_number_plate include in this service.
+- I would remove the repository mockup because if I change some value in the repository the test will continue to work and it can cause an error. 
+
+
+## Anexo
+
+Failed command: 
+
+`docker-compose run --rm test`
+
+So I use command to run test: 
+   
+`docker-compose run web pytest`
