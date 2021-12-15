@@ -72,7 +72,25 @@ class TestStartJourneyAPIView:
 
 
 class TestStopJourneyAPIView:
-    def test_stop(self):
-        # TODO: Implement an endpoint that makes use of a StopJourney use case
-        # and tests it
-        pass
+    def test_api(self, client, mocker):
+        mocker.patch.object(
+            views.StopJourneyAPIView,
+            "get_repository",
+            return_value=MockJourneyRepository(),
+        )
+        payload = {"end": "2021-12-30"}
+        response = client.put("/api/adventure/stop/1/", payload, content_type="application/json")
+
+        assert response.status_code == 200
+
+    def test_api_fail(self, client, mocker):
+        mocker.patch.object(
+            views.StopJourneyAPIView,
+            "get_repository",
+            return_value=MockJourneyRepository(),
+        )
+
+        payload = {}
+        response = client.put("/api/adventure/stop/2/", payload, content_type="application/json")
+        assert response.status_code == 400
+

@@ -1,8 +1,8 @@
 from __future__ import annotations
-
+from adventure import models
 from .notifiers import Notifier
 from .repositories import JourneyRepository
-
+from datetime import date
 
 class StartJourney:
     def __init__(self, repository: JourneyRepository, notifier: Notifier):
@@ -25,3 +25,17 @@ class StartJourney:
 
     class CantStart(Exception):
         pass
+
+
+class StopJourney:
+    def __init__(self, repository: JourneyRepository, notifier: Notifier):
+        self.repository = repository
+        self.notifier = notifier
+
+    def set_params(self, data: dict) -> StopJourney:
+        self.data = data
+        return self
+
+    def execute(self, journey: models.Journey) -> None:
+        journey = self.repository.update_journey(journey=journey, data=self.data)
+        return journey

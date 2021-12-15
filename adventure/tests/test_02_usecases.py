@@ -22,6 +22,13 @@ class MockJourneyRepository(repositories.JourneyRepository):
     def create_journey(self, vehicle) -> models.Journey:
         return models.Journey(vehicle=vehicle, start=timezone.now().date())
 
+    def get_journey(self, id: int) -> models.Journey:
+        return models.Journey(start=timezone.now().date(), id=id)
+    
+    def update_journey(self, journey: models.Journey, data) -> models.Journey:
+        for attr, value in data.items():
+           setattr(journey, attr, value)
+        return journey
 
 class MockNotifier(notifiers.Notifier):
     def send_notifications(self, journey: models.Journey) -> None:
@@ -57,4 +64,13 @@ class TestStopJourney:
         # TODO: Implement a StopJourney Usecase
         # it takes a started journey as a parameter and sets an "end" value
         # then saves it to the database
-        pass
+        repo = MockJourneyRepository()
+        notifier = MockNotifier()
+        data = {"name": "Kitt", "passengers": 2}
+        usecase = usecases.StartJourney(repo, notifier).set_params(data)
+        journey = usecase.execute()
+        data_stop = {"end": timezone.now().date()}
+        usecase_stop = usecases.StopJourney(
+            repo, notifier).set_params(data_stop)
+        journey = usecase_stop.execute(journey)
+        assert journey.end == timezone.now().date()

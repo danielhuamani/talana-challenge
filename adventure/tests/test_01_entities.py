@@ -50,7 +50,6 @@ class TestVehicle:
         # ]
         vehicle = models.Vehicle(vehicle_type=car, passengers=3)
         distribution_expected = [[True, True], [True, False]]
-        print(vehicle.get_distribution(), "get_distribution")
         assert vehicle.get_distribution() == distribution_expected
 
         vehicle = models.Vehicle(vehicle_type=van, passengers=5)

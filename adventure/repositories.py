@@ -1,7 +1,7 @@
 from django.utils import timezone
 
 from adventure import models
-
+from datetime import date
 
 class JourneyRepository:
     def get_or_create_car(self) -> models.VehicleType:
@@ -19,3 +19,12 @@ class JourneyRepository:
         return models.Journey.objects.create(
             vehicle=vehicle, start=timezone.now().date()
         )
+
+    def get_journey(self, id) -> models.Journey:
+        return models.Journey.objects.get(id=id)
+    
+    def update_journey(self, journey: models.Journey, data: dict) -> models.Journey:
+        for attr, value in data.items():
+           setattr(journey, attr, value)
+        journey.save()
+        return journey
