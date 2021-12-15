@@ -45,3 +45,13 @@ class Journey(models.Model):
         if not self.end:
             return False
         return self.end <= date.today()
+
+
+def validate_number_plate(number_plate: str) -> bool:
+    number_plate_list = number_plate.split("-")
+    if not len(number_plate_list) == 3:
+        return False
+    is_first_letter = number_plate_list[0].isalpha()
+    is_second_number = number_plate_list[1].isdigit()
+    is_third_number = number_plate_list[2].isdigit()
+    return all([is_first_letter, is_second_number, is_third_number])
